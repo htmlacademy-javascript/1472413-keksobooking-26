@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг»
 
 * Студент: [Екатерина Кулинич](https://up.htmlacademy.ru/javascript/26/user/1472413).
-* Наставник: `Неизвестно`.
+* Наставник: [Дмитрий (sench) Железцов](https://htmlacademy.ru/profile/sench).
 
 ---
 
