@@ -1,11 +1,11 @@
 const TYPE = ['palace', 'flat', 'house', 'bungalow', 'hotel'];
-const CHECKIN = ['12:00', '13:00', '14:00'];
-const CHECKOUT = ['12:00', '13:00', '14:00'];
+const TIMES = ['12:00', '13:00', '14:00'];
 const FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 const PHOTOS = ['https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/duonguyen-8LrGtIxxa4w.jpg', 'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg', 'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg'];
 
 const INTEGER_MIN = 0;
 const INTEGER_MAX = 100;
+const SINGLE_DIGIT_INDEX = 9;
 
 const LATITUDE_MIN = 35.65000;
 const LATITUDE_MAX = 35.70000;
@@ -51,7 +51,7 @@ const createObject = (index) => {
 
   return {
     author: {
-      avatar: `img/avatars/user${index < 9 ? '0' : ''}${index + 1}.png`
+      avatar: `img/avatars/user${index < SINGLE_DIGIT_INDEX ? '0' : ''}${index + 1}.png`
     },
     offer: {
       title: 'Сногшибательное предложение!',
@@ -60,8 +60,8 @@ const createObject = (index) => {
       type: getRandomArrayElement(TYPE),
       rooms: getRandomPositiveInteger(INTEGER_MIN, INTEGER_MAX),
       guests: getRandomPositiveInteger(INTEGER_MIN, INTEGER_MAX),
-      checkin: getRandomArrayElement(CHECKIN),
-      checkout: getRandomArrayElement(CHECKOUT),
+      checkin: getRandomArrayElement(TIMES),
+      checkout: getRandomArrayElement(TIMES),
       features: getRandomArray(FEATURES),
       description: 'Современное и уютное место специально для тех, кто хочет отдохнуть от шумного города, но не готов отказываться от комофрта',
       photos: getRandomArray(PHOTOS),
