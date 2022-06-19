@@ -34,7 +34,7 @@ const createObject = (index) => {
       checkin: getRandomArrayElement(TIMES),
       checkout: getRandomArrayElement(TIMES),
       features: getRandomArray(FEATURES),
-      description: 'Современное и уютное место специально для тех, кто хочет отдохнуть от шумного города, но не готов отказываться от комофрта',
+      description: 'Современное и уютное место специально для тех, кто хочет отдохнуть от шумного города, но не готов отказываться от комфорта',
       photos: getRandomArray(PHOTOS),
     },
     location: {
