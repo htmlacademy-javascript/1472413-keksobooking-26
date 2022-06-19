@@ -1,3 +1,1 @@
-import {createObjects} from './data.js';
-
-createObjects();
+import './popup.js';
