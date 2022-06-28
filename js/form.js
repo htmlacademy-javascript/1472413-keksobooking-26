@@ -15,7 +15,4 @@ const enableForm = (form) => {
   });
 };
 
-disableForm(adForm);
-enableForm(adForm);
-disableForm(mapFilter);
-enableForm(mapFilter);
+export {adForm, mapFilter, disableForm, enableForm};
