@@ -1,5 +1,12 @@
 import {adForm} from './form.js';
 
+const MAX_PRICE = 100000;
+const MIN_LENGTH = 30;
+const MAX_LENGTH = 100;
+const NOT_LIVING_ROOM = '100';
+const PEOPLE_COUNT = '0';
+
+
 const titleForm = adForm.querySelector('#title');
 const priceForm = adForm.querySelector('#price');
 const roomNumberForm = adForm.querySelector('#room_number');
@@ -11,18 +18,18 @@ const pristine = new Pristine(adForm, {
 });
 
 pristine.addValidator(titleForm, (value) => {
-  if (value.length > 30 && value.length < 100) {
+  if (value.length > MIN_LENGTH && value.length < MAX_LENGTH) {
     return true;
   }
 }, 'Длина заголовка должна быть от 30 до 100 символов', 2, true);
 
 pristine.addValidator(priceForm, (value) => {
-  if (value <= 100000) {
+  if (value <= MAX_PRICE) {
     return true;
   }
 }, 'Цена должна быть меньше 100000', 2, true);
 
-const checkRoomNumberCapacity = () => (roomNumberForm.value !== '100' && capacityForm.value !== '0' && roomNumberForm.value >= capacityForm.value) || (roomNumberForm.value === '100' && capacityForm.value === '0');
+const checkRoomNumberCapacity = () => (roomNumberForm.value !== NOT_LIVING_ROOM && capacityForm.value !== PEOPLE_COUNT && roomNumberForm.value >= capacityForm.value) || (roomNumberForm.value === NOT_LIVING_ROOM && capacityForm.value === PEOPLE_COUNT);
 
 pristine.addValidator(capacityForm, checkRoomNumberCapacity, 'Количество гостей не соответствует количеству комнат', 2, true);
 pristine.addValidator(roomNumberForm, checkRoomNumberCapacity, 'Количество гостей не соответствует количеству комнат', 2, true);
