@@ -1,0 +1,78 @@
+import {adForm} from './form.js';
+
+const MAX_PRICE = 100000;
+const MIN_LENGTH = 30;
+const MAX_LENGTH = 100;
+const NOT_LIVING_ROOM = '100';
+const PEOPLE_COUNT = '0';
+
+const houseMinPriceMap = new Map();
+houseMinPriceMap.set('bungalow', '0');
+houseMinPriceMap.set('flat', '1000');
+houseMinPriceMap.set('hotel', '3000');
+houseMinPriceMap.set('house', '5000');
+houseMinPriceMap.set('palace', '10000');
+
+
+const titleForm = adForm.querySelector('#title');
+const priceForm = adForm.querySelector('#price');
+const roomNumberForm = adForm.querySelector('#room_number');
+const capacityForm = adForm.querySelector('#capacity');
+const houseTypeForm = adForm.querySelector('#type');
+const timeinForm = adForm.querySelector('#timein');
+const timeoutForm = adForm.querySelector('#timeout');
+
+const pristine = new Pristine(adForm, {
+  classTo: 'ad-form__element',
+  errorTextParent: 'ad-form__element'
+});
+
+pristine.addValidator(titleForm, (value) => {
+  if (value.length > MIN_LENGTH && value.length < MAX_LENGTH) {
+    return true;
+  }
+}, 'Длина заголовка должна быть от 30 до 100 символов', 2, true);
+
+pristine.addValidator(priceForm, (value) => {
+  if (value <= MAX_PRICE && value >= Number(priceForm.placeholder)) {
+    return true;
+  }
+}, () => `Цена должна быть больше ${priceForm.placeholder} меньше 100000`, 2, true);
+
+const checkRoomNumberCapacity = () => (roomNumberForm.value !== NOT_LIVING_ROOM && capacityForm.value !== PEOPLE_COUNT && roomNumberForm.value >= capacityForm.value) || (roomNumberForm.value === NOT_LIVING_ROOM && capacityForm.value === PEOPLE_COUNT);
+
+pristine.addValidator(capacityForm, checkRoomNumberCapacity, 'Количество гостей не соответствует количеству комнат', 2, true);
+pristine.addValidator(roomNumberForm, checkRoomNumberCapacity, 'Количество гостей не соответствует количеству комнат', 2, true);
+
+const onRoomsChange = () => {
+  pristine.validate(capacityForm);
+  pristine.validate(roomNumberForm);
+};
+capacityForm.addEventListener('change',  onRoomsChange);
+
+const onGuestsChange = () => {
+  pristine.validate(capacityForm);
+  pristine.validate(roomNumberForm);
+};
+roomNumberForm.addEventListener('change', onGuestsChange);
+
+const onHouseTypeChange = () => {
+  priceForm.placeholder = houseMinPriceMap.get(houseTypeForm.value);
+  pristine.validate(priceForm);
+};
+houseTypeForm.addEventListener('change', onHouseTypeChange);
+
+const onTimeInChange = () => {
+  timeoutForm.value = timeinForm.value;
+};
+timeinForm.addEventListener('change', onTimeInChange);
+
+const onTimeOutChange = () => {
+  timeinForm.value = timeoutForm.value;
+};
+timeoutForm.addEventListener('change', onTimeOutChange);
+
+adForm.addEventListener('submit', (evt) => {
+  evt.preventDefault();
+  pristine.validate();
+});
