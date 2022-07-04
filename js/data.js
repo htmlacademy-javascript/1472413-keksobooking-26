@@ -46,4 +46,4 @@ const createObject = (index) => {
 
 const createObjects = () => Array.from({length: SIMILAR_OBJECT_NEARBY_COUNT}, (item, index) => createObject(index));
 
-export {createObjects};
+export { createObjects };

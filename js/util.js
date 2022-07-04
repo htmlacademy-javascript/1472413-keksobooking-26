@@ -9,7 +9,7 @@ const getRandomPositiveFloat = (firstNumber, secondNumber, numbersAfterPoint = 5
   const minNumber = Math.min(Math.abs(firstNumber), Math.abs(secondNumber));
   const maxNumber = Math.max(Math.abs(firstNumber), Math.abs(secondNumber));
 
-  return +(Math.random() * (maxNumber - minNumber + 1) + minNumber).toFixed(numbersAfterPoint);
+  return +(Math.random() * (maxNumber - minNumber) + minNumber).toFixed(numbersAfterPoint);
 };
 
 const getRandomArrayElement = (elements) => elements[getRandomPositiveInteger(0, elements.length - 1)];
@@ -59,4 +59,4 @@ const checkData = (arrayObject, templateObject) => {
   return true;
 };
 
-export {getRandomPositiveInteger, getRandomPositiveFloat, getRandomArrayElement, getRandomArray, getWordEndings, checkData};
+export { getRandomPositiveInteger, getRandomPositiveFloat, getRandomArrayElement, getRandomArray, getWordEndings, checkData };

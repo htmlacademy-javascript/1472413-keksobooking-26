@@ -1,5 +1,3 @@
-import {adForm} from './form.js';
-
 const MAX_PRICE = 100000;
 const MIN_LENGTH = 30;
 const MAX_LENGTH = 100;
@@ -13,7 +11,7 @@ houseMinPriceMap.set('hotel', '3000');
 houseMinPriceMap.set('house', '5000');
 houseMinPriceMap.set('palace', '10000');
 
-
+const adForm = document.querySelector('.ad-form');
 const titleForm = adForm.querySelector('#title');
 const priceForm = adForm.querySelector('#price');
 const roomNumberForm = adForm.querySelector('#room_number');
@@ -21,6 +19,7 @@ const capacityForm = adForm.querySelector('#capacity');
 const houseTypeForm = adForm.querySelector('#type');
 const timeinForm = adForm.querySelector('#timein');
 const timeoutForm = adForm.querySelector('#timeout');
+const sliderForm = adForm.querySelector('.ad-form__slider');
 
 const pristine = new Pristine(adForm, {
   classTo: 'ad-form__element',
@@ -57,10 +56,23 @@ const onGuestsChange = () => {
 roomNumberForm.addEventListener('change', onGuestsChange);
 
 const onHouseTypeChange = () => {
+  sliderForm.noUiSlider.updateOptions({
+    range: {
+      min: Number(houseMinPriceMap.get(houseTypeForm.value)),
+      max: MAX_PRICE,
+    }
+  });
   priceForm.placeholder = houseMinPriceMap.get(houseTypeForm.value);
+  priceForm.value = houseMinPriceMap.get(houseTypeForm.value);
+  sliderForm.noUiSlider.set(Number(priceForm.value));
   pristine.validate(priceForm);
 };
 houseTypeForm.addEventListener('change', onHouseTypeChange);
+
+const onPriceChange = () => {
+  sliderForm.noUiSlider.set(Number(priceForm.value));
+};
+priceForm.addEventListener('change', onPriceChange);
 
 const onTimeInChange = () => {
   timeoutForm.value = timeinForm.value;
@@ -71,6 +83,28 @@ const onTimeOutChange = () => {
   timeinForm.value = timeoutForm.value;
 };
 timeoutForm.addEventListener('change', onTimeOutChange);
+
+noUiSlider.create(sliderForm, {
+  start: [Number(houseMinPriceMap.get(houseTypeForm.value))],
+  step: 10,
+  connect: 'lower',
+  format: {
+    to: function (value) {
+      return value.toFixed();
+    },
+    from: function (value) {
+      return parseFloat(value);
+    },
+  },
+  range: {
+    'min': Number(houseMinPriceMap.get(houseTypeForm.value)),
+    'max': MAX_PRICE,
+  },
+});
+
+sliderForm.noUiSlider.on('update', () => {
+  priceForm.value = sliderForm.noUiSlider.get();
+});
 
 adForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
