@@ -1,7 +1,5 @@
-import {createObjects} from './data.js';
 import {getWordEndings, checkData} from './util.js';
 
-const popupFragment = document.querySelector('#map-canvas');
 const fragment = document.createDocumentFragment();
 
 const template = document.querySelector('#card').content.querySelector('.popup');
@@ -13,7 +11,7 @@ popupTypesMap.set('house', 'Дом');
 popupTypesMap.set('palace', 'Дворец');
 popupTypesMap.set('hotel', 'Отель');
 
-createObjects().forEach((object) => {
+const createCustomPopup = ((object) => {
   const card = template.cloneNode(true);
   const popupTitle = card.querySelector('.popup__title');
   const popupAddress = card.querySelector('.popup__text--address');
@@ -93,7 +91,7 @@ createObjects().forEach((object) => {
     popupAvatar.src = avatar;
   }
 
-  fragment.appendChild(card);
+  return fragment.appendChild(card);
 });
 
-popupFragment.appendChild(fragment.children[0]);
+export { createCustomPopup };
