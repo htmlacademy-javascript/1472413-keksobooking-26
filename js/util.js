@@ -59,4 +59,6 @@ const checkData = (arrayObject, templateObject) => {
   return true;
 };
 
-export { getRandomPositiveInteger, getRandomPositiveFloat, getRandomArrayElement, getRandomArray, getWordEndings, checkData };
+const isEscapeKey = (evt) => evt.key === 'Escape';
+
+export { getRandomPositiveInteger, getRandomPositiveFloat, getRandomArrayElement, getRandomArray, getWordEndings, checkData, isEscapeKey };
