@@ -1,3 +1,7 @@
+import { createPostError, createPostSuccess } from './messages.js';
+import { sendData } from './api.js';
+import { resetMap, resetMapFilter, resetlocationInput } from './map.js';
+
 const MAX_PRICE = 100000;
 const MIN_LENGTH = 30;
 const MAX_LENGTH = 100;
@@ -20,6 +24,7 @@ const houseTypeForm = adForm.querySelector('#type');
 const timeinForm = adForm.querySelector('#timein');
 const timeoutForm = adForm.querySelector('#timeout');
 const sliderForm = adForm.querySelector('.ad-form__slider');
+const resetFormButton = adForm.querySelector('.ad-form__reset');
 
 const pristine = new Pristine(adForm, {
   classTo: 'ad-form__element',
@@ -33,10 +38,10 @@ pristine.addValidator(titleForm, (value) => {
 }, 'Длина заголовка должна быть от 30 до 100 символов', 2, true);
 
 pristine.addValidator(priceForm, (value) => {
-  if (value <= MAX_PRICE && value >= Number(priceForm.placeholder)) {
+  if (value <= MAX_PRICE && value >= Number(houseMinPriceMap.get(houseTypeForm.value))) {
     return true;
   }
-}, () => `Цена должна быть больше ${priceForm.placeholder} меньше 100000`, 2, true);
+}, () => `Цена должна быть больше ${houseMinPriceMap.get(houseTypeForm.value)} меньше 100000`, 2, true);
 
 const checkRoomNumberCapacity = () => (roomNumberForm.value !== NOT_LIVING_ROOM && capacityForm.value !== PEOPLE_COUNT && roomNumberForm.value >= capacityForm.value) || (roomNumberForm.value === NOT_LIVING_ROOM && capacityForm.value === PEOPLE_COUNT);
 
@@ -106,7 +111,33 @@ sliderForm.noUiSlider.on('update', () => {
   priceForm.value = sliderForm.noUiSlider.get();
 });
 
-adForm.addEventListener('submit', (evt) => {
+const resetPage = () => {
+  resetMap();
+  resetMapFilter();
+  adForm.reset();
+  sliderForm.noUiSlider.reset();
+  resetlocationInput();
+};
+
+resetFormButton.addEventListener('click', (evt) => {
   evt.preventDefault();
-  pristine.validate();
+  resetPage();
 });
+
+const setUserFormSubmit = () => {
+  adForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+
+    const isValid = pristine.validate();
+    if (isValid) {
+      sendData(
+        () => createPostSuccess(),
+        () => createPostError(),
+        new FormData(evt.target),
+      );
+      resetPage();
+    }
+  });
+};
+
+export { setUserFormSubmit };

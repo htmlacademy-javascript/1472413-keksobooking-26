@@ -1,4 +1,3 @@
-import { createObjects } from './data.js';
 import { createCustomPopup } from './popup.js';
 import { enableForm } from './form.js';
 
@@ -57,8 +56,6 @@ mainPinMarker.on('moveend', (evt) => {
   locationInput.value = `${evt.target.getLatLng().lat.toFixed(BASIC_MAP_SETUP.digits)}, ${evt.target.getLatLng().lng.toFixed(BASIC_MAP_SETUP.digits)}`;
 });
 
-const points = createObjects();
-
 const icon = L.icon({
   iconUrl: '../img/pin.svg',
   iconSize: [40, 40],
@@ -82,6 +79,30 @@ const createMarker = (point) => {
     .bindPopup(createCustomPopup(point));
 };
 
-points.forEach((point) => {
-  createMarker(point);
-});
+const renderSimilarList = (similarWizards) => {
+  similarWizards.forEach((point) => {
+    createMarker(point);
+  });
+};
+
+const resetMap = () => {
+  map
+    .setView({
+      lat: BASIC_MAP_SETUP.lat,
+      lng: BASIC_MAP_SETUP.lng,
+    }, BASIC_MAP_SETUP.scale)
+    .closePopup();
+  mainPinMarker
+    .setLatLng({
+      lat: BASIC_MAP_SETUP.lat,
+      lng: BASIC_MAP_SETUP.lng,
+    });
+};
+
+const resetMapFilter = () => mapFilter.reset();
+
+const resetlocationInput = () => {
+  locationInput.value = `${BASIC_MAP_SETUP.lat}, ${BASIC_MAP_SETUP.lng}`;
+};
+
+export { renderSimilarList, mapFilter, resetMap, resetMapFilter, resetlocationInput };
