@@ -40,11 +40,7 @@ const checkGuestsCount = (object) => {
 
 const getSelectedFeatures = () => {
   const selectedCheckboxes = document.querySelectorAll('input[name="features"]:checked');
-  const values = Array.from(selectedCheckboxes, ({
-    value
-  }) => value);
-
-  return values;
+  return Array.from(selectedCheckboxes, ({value}) => value);
 };
 
 const checkFeatures = (object) => {
@@ -60,8 +56,7 @@ const checkFeatures = (object) => {
 const filterObjects = (objects) => {
   markerGroup.clearLayers();
 
-  const objectsFilter = objects.filter((object) => (checkObjectType(object) && checkObjectPrice(object) && checkRoomsCount(object) && checkGuestsCount(object) && checkFeatures(object))).slice(0, SIMILAR_OBJECT_COUNT);
-  return objectsFilter;
+  return objects.filter((object) => (checkObjectType(object) && checkObjectPrice(object) && checkRoomsCount(object) && checkGuestsCount(object) && checkFeatures(object))).slice(0, SIMILAR_OBJECT_COUNT);
 };
 
 const onFilterChange = (cb) => {
