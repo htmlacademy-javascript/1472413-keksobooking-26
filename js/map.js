@@ -1,5 +1,6 @@
 import { createCustomPopup } from './popup.js';
 import { enableForm } from './form.js';
+import { filterObjects } from './form-filter.js';
 
 const mapFilter = document.querySelector('.map__filters');
 const adForm = document.querySelector('.ad-form');
@@ -62,6 +63,8 @@ const icon = L.icon({
   iconAnchor: [20, 40],
 });
 
+const markerGroup = L.layerGroup().addTo(map);
+
 const createMarker = (point) => {
   const {lat, lng} = point.location;
   const marker = L.marker(
@@ -75,12 +78,15 @@ const createMarker = (point) => {
   );
 
   marker
-    .addTo(map)
+    .addTo(markerGroup)
     .bindPopup(createCustomPopup(point));
 };
 
-const renderSimilarList = (similarWizards) => {
-  similarWizards.forEach((point) => {
+const renderSimilarList = (objects) => {
+
+  const similarObjects = filterObjects(objects.slice());
+
+  similarObjects.forEach((point) => {
     createMarker(point);
   });
 };
@@ -105,4 +111,4 @@ const resetlocationInput = () => {
   locationInput.value = `${BASIC_MAP_SETUP.lat}, ${BASIC_MAP_SETUP.lng}`;
 };
 
-export { renderSimilarList, mapFilter, resetMap, resetMapFilter, resetlocationInput };
+export { renderSimilarList, mapFilter, resetMap, resetMapFilter, resetlocationInput, markerGroup };
