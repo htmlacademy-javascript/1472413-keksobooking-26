@@ -3,11 +3,14 @@ import { setUserFormSubmit } from './form-validation.js';
 import { enableForm } from './form.js';
 import { createGetError } from './messages.js';
 import { getData } from './api.js';
-
-const SIMILAR_OBJECT_NEARBY_COUNT = 10;
+import { onFilterChange } from './form-filter.js';
+import { debounce } from './util.js';
 
 getData(
-  (objects) => renderSimilarList(objects.slice(0, SIMILAR_OBJECT_NEARBY_COUNT)),
+  (objects) => {
+    renderSimilarList(objects);
+    onFilterChange(debounce(() => renderSimilarList(objects)));
+  },
   (message) => {
     enableForm(mapFilter, false);
     createGetError(message);
