@@ -1,6 +1,7 @@
 import { createPostError, createPostSuccess } from './messages.js';
 import { sendData } from './api.js';
 import { resetMap, resetMapFilter, resetlocationInput } from './map.js';
+import { resetPhotos } from './form-files.js';
 
 const MAX_PRICE = 100000;
 const MIN_LENGTH = 30;
@@ -117,6 +118,7 @@ const resetPage = () => {
   adForm.reset();
   sliderForm.noUiSlider.reset();
   resetlocationInput();
+  resetPhotos();
 };
 
 resetFormButton.addEventListener('click', (evt) => {
