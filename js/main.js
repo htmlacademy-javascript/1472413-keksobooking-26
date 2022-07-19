@@ -5,6 +5,7 @@ import { createGetError } from './messages.js';
 import { getData } from './api.js';
 import { onFilterChange } from './form-filter.js';
 import { debounce } from './util.js';
+import './form-files.js';
 
 getData(
   (objects) => {
