@@ -25,6 +25,7 @@ const houseTypeForm = adForm.querySelector('#type');
 const timeinForm = adForm.querySelector('#timein');
 const timeoutForm = adForm.querySelector('#timeout');
 const sliderForm = adForm.querySelector('.ad-form__slider');
+const submitFormButton = adForm.querySelector('.ad-form__submit');
 const resetFormButton = adForm.querySelector('.ad-form__reset');
 
 const pristine = new Pristine(adForm, {
@@ -69,9 +70,9 @@ const onHouseTypeChange = () => {
     }
   });
   priceForm.placeholder = houseMinPriceMap.get(houseTypeForm.value);
-  priceForm.value = houseMinPriceMap.get(houseTypeForm.value);
+  //priceForm.value = houseMinPriceMap.get(houseTypeForm.value);
   sliderForm.noUiSlider.set(Number(priceForm.value));
-  pristine.validate(priceForm);
+  //pristine.validate(priceForm);
 };
 houseTypeForm.addEventListener('change', onHouseTypeChange);
 
@@ -108,7 +109,7 @@ noUiSlider.create(sliderForm, {
   },
 });
 
-sliderForm.noUiSlider.on('update', () => {
+sliderForm.noUiSlider.on('slide', () => {
   priceForm.value = sliderForm.noUiSlider.get();
 });
 
@@ -126,15 +127,32 @@ resetFormButton.addEventListener('click', (evt) => {
   resetPage();
 });
 
+const blockSubmitButton = () => {
+  submitFormButton.setAttribute('disabled', true);
+  submitFormButton.textContent = 'Публикую...';
+};
+
+const unblockSubmitButton = () => {
+  submitFormButton.removeAttribute('disabled');
+  submitFormButton.textContent = 'Опубликовать';
+};
+
 const setUserFormSubmit = () => {
   adForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
 
     const isValid = pristine.validate();
     if (isValid) {
+      blockSubmitButton();
       sendData(
-        () => createPostSuccess(),
-        () => createPostError(),
+        () => {
+          unblockSubmitButton();
+          createPostSuccess();
+        },
+        () => {
+          unblockSubmitButton();
+          createPostError();
+        },
         new FormData(evt.target),
       );
       resetPage();
