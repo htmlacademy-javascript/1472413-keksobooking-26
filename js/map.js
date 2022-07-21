@@ -1,17 +1,19 @@
 import { createCustomPopup } from './popup.js';
 import { enableForm } from './form.js';
 import { filterObjects } from './form-filter.js';
+import { defaultObjects } from './main.js';
 
-const mapFilter = document.querySelector('.map__filters');
-const adForm = document.querySelector('.ad-form');
-const popupFragment = document.querySelector('#map-canvas');
-const locationInput = document.querySelector('#address');
 const BASIC_MAP_SETUP = {
   lat: 35.65294,
   lng: 139.7807,
   scale: 12,
   digits: 5
 };
+
+const mapFilter = document.querySelector('.map__filters');
+const adForm = document.querySelector('.ad-form');
+const popupFragment = document.querySelector('#map-canvas');
+const locationInput = document.querySelector('#address');
 
 enableForm(mapFilter, false);
 enableForm(adForm, false);
@@ -103,6 +105,7 @@ const resetMap = () => {
       lat: BASIC_MAP_SETUP.lat,
       lng: BASIC_MAP_SETUP.lng,
     });
+  renderSimilarList(defaultObjects);
 };
 
 const resetMapFilter = () => mapFilter.reset();

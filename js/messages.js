@@ -3,6 +3,51 @@ import { isEscapeKey } from './util.js';
 const templateSucces = document.querySelector('#success').content.querySelector('.success');
 const templateError = document.querySelector('#error').content.querySelector('.error');
 
+let generalMessageContainer;
+
+const closeMessageByClickOutside = (evt) => {
+  if (evt.target !== generalMessageContainer) {
+    generalMessageContainer.remove();
+    document.removeEventListener('click', closeMessageByClickOutside);
+    document.removeEventListener('keydown', closeMessageByClickOutside);
+  }
+  if (isEscapeKey(evt)) {
+    evt.preventDefault();
+    generalMessageContainer.remove();
+    document.removeEventListener('click', closeMessageByClickOutside);
+    document.removeEventListener('keydown', closeMessageByClickOutside);
+  }
+};
+
+const closeMessageByClickInside = (evt) => {
+  if (evt.target === generalMessageContainer) {
+    generalMessageContainer.remove();
+    document.removeEventListener('click', closeMessageByClickInside);
+    document.removeEventListener('keydown', closeMessageByClickInside);
+  }
+  if (isEscapeKey(evt)) {
+    evt.preventDefault();
+    generalMessageContainer.remove();
+    document.removeEventListener('click', closeMessageByClickInside);
+    document.removeEventListener('keydown', closeMessageByClickInside);
+  }
+};
+
+/*const closeMessageByClick = (evt) => {
+  if (evt.target !== ad) {
+    ad.remove();
+    document.removeEventListener('click', closeMessageByClick);
+  }
+};
+
+const closeMessageByEscape = (ad) => (evt) => {
+  if (isEscapeKey(evt)) {
+    evt.preventDefault();
+    ad.remove();
+    document.removeEventListener('keydown', closeMessageByEscape(ad));
+  }
+};*/
+
 const createGetError = (message) => {
   const messageContainer = document.createElement('div');
   const messageText = document.createElement('p');
@@ -28,39 +73,27 @@ const createGetError = (message) => {
   messageContainer.append(messageText);
   document.body.append(messageContainer);
 
-  document.addEventListener('click', (evt) => {
-    if (evt.target !== messageContainer) {
-      messageContainer.remove();
-    }
-  });
-
-  document.addEventListener('keydown', (evt) => {
-    if (isEscapeKey(evt)) {
-      messageContainer.remove();
-    }
-  });
+  generalMessageContainer = messageContainer;
+  document.addEventListener('click', closeMessageByClickOutside);
+  document.addEventListener('keydown', closeMessageByClickOutside);
 };
 
 const createPostError = (() => {
   const message = templateError.cloneNode(true);
   const messageButton = message.querySelector('.error__button');
 
-  messageButton.addEventListener('click', () => {
+  generalMessageContainer = message;
+  document.addEventListener('click', closeMessageByClickInside);
+  document.addEventListener('keydown', closeMessageByClickInside);
+
+  const closeMessageByButton = () => {
     message.remove();
-  });
+    messageButton.removeEventListener('click', closeMessageByButton);
+    document.removeEventListener('click', closeMessageByClickInside);
+    document.removeEventListener('keydown', closeMessageByClickInside);
+  };
 
-  document.addEventListener('click', (evt) => {
-    if (evt.target !== message) {
-      message.remove();
-    }
-  });
-
-  document.addEventListener('keydown', (evt) => {
-    if (isEscapeKey(evt)) {
-      evt.preventDefault();
-      message.remove();
-    }
-  });
+  messageButton.addEventListener('click', closeMessageByButton);
 
   document.body.append(message);
 });
@@ -70,16 +103,9 @@ const createPostSuccess = (() => {
 
   document.body.append(message);
 
-  document.addEventListener('click', () => {
-    message.remove();
-  });
-
-  document.addEventListener('keydown', (evt) => {
-    if (isEscapeKey(evt)) {
-      evt.preventDefault();
-      message.remove();
-    }
-  });
+  generalMessageContainer = message;
+  document.addEventListener('click', closeMessageByClickInside);
+  document.addEventListener('keydown', closeMessageByClickInside);
 });
 
 export { createGetError, createPostError, createPostSuccess };
