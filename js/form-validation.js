@@ -114,8 +114,8 @@ sliderForm.noUiSlider.on('slide', () => {
 });
 
 const resetPage = () => {
-  resetMap();
   resetMapFilter();
+  resetMap();
   adForm.reset();
   sliderForm.noUiSlider.reset();
   resetlocationInput();

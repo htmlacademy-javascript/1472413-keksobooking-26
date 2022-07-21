@@ -7,8 +7,11 @@ import { onFilterChange } from './form-filter.js';
 import { debounce } from './util.js';
 import './form-files.js';
 
+let defaultObjects = [];
+
 getData(
   (objects) => {
+    defaultObjects = objects;
     renderSimilarList(objects);
     onFilterChange(debounce(() => renderSimilarList(objects)));
   },
@@ -19,3 +22,5 @@ getData(
 );
 
 setUserFormSubmit();
+
+export { defaultObjects };
