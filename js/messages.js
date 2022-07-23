@@ -33,21 +33,6 @@ const closeMessageByClickInside = (evt) => {
   }
 };
 
-/*const closeMessageByClick = (evt) => {
-  if (evt.target !== ad) {
-    ad.remove();
-    document.removeEventListener('click', closeMessageByClick);
-  }
-};
-
-const closeMessageByEscape = (ad) => (evt) => {
-  if (isEscapeKey(evt)) {
-    evt.preventDefault();
-    ad.remove();
-    document.removeEventListener('keydown', closeMessageByEscape(ad));
-  }
-};*/
-
 const createGetError = (message) => {
   const messageContainer = document.createElement('div');
   const messageText = document.createElement('p');
