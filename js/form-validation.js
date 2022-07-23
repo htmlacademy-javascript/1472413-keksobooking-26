@@ -70,9 +70,7 @@ const onHouseTypeChange = () => {
     }
   });
   priceForm.placeholder = houseMinPriceMap.get(houseTypeForm.value);
-  //priceForm.value = houseMinPriceMap.get(houseTypeForm.value);
   sliderForm.noUiSlider.set(Number(priceForm.value));
-  //pristine.validate(priceForm);
 };
 houseTypeForm.addEventListener('change', onHouseTypeChange);
 
